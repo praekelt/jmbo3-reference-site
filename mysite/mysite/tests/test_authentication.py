@@ -60,7 +60,6 @@ class TokenAuthenticationTestCase(TestCase):
         self.factory = RequestFactory()
         self.client = APIClient()
 
-
         # create admin user and non-staff user
         self.admin_user = User.objects.create_superuser(
             "admin",
