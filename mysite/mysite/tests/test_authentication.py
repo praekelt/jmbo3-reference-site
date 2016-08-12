@@ -47,6 +47,7 @@ urlpatterns += [
     url(r"^modelbase-list/$", MockListView.as_view()),
 ]
 
+
 class TokenAuthenticationTestCase(TestCase):
     """
     Test that users can be authenticated using
