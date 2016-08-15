@@ -84,7 +84,7 @@ class TokenAuthenticationTestCase(TestCase):
     def test_non_staff_only_accesses_published(self):
         authorization_header = "JWT {0}".format(self.non_staff_user_jwt)
         response = self.client.get(
-            "/modelbase-list/",
+            reverse("modelbase_list"),
             HTTP_AUTHORIZATION=authorization_header)
         items = json.loads(response.content)
 
@@ -96,7 +96,7 @@ class TokenAuthenticationTestCase(TestCase):
 
     def test_unauthenticated_user_has_no_access(self):
         # unauthenticated requests using rest_framework_jwt return a 401
-        response = self.client.get("/modelbase-list/")
+        response = self.client.get(reverse("modelbase_list"))
         self.assertEqual(response.status_code, 401)
 
         # an unauthenticated user shoulnd't be able to see any items
