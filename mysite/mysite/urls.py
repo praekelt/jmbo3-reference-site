@@ -35,10 +35,6 @@ router.register(r"manufacturers", ManufacturerViewSet)
 
 admin.autodiscover()
 
-# JSON Web Token Authentication
-jwt_patterns = ([
-    url(r"^api-auth/$", obtain_jwt_token, name="obtain_token"),
-])
 
 urlpatterns = [
     url(r"^api/(?P<version>(v1))/", include(router.urls)),
@@ -47,7 +43,8 @@ urlpatterns = [
     url(r"^comments/", include("django_comments.urls")),
     url(r"^post/", include("post.urls")),
     url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
-    url(r"^jwt-token/", include(jwt_patterns, namespace="jwt")),
+    # url(r"^jwt-token/", include(jwt_patterns, namespace="jwt")),
+    url(r"^api-auth/$", obtain_jwt_token, name="obtain_token"),
 ]
 
 if settings.DEBUG:

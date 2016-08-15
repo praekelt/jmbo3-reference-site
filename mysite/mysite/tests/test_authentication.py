@@ -2,50 +2,20 @@ import json
 
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-from django.conf.urls import url
 from django.core.urlresolvers import reverse
+from django.conf.urls import url
 from django.test import RequestFactory, TestCase
+
+from rest_framework.test import APIClient
+
 
 from jmbo.models import ModelBase
 
-from mysite.tests.urls import urlpatterns
 
-from rest_framework import generics
-from rest_framework import serializers
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.test import APIClient
-
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
-
-class ModelBaseSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ModelBase
-        fields = ("title",)
-
-
-class MockListView(generics.ListAPIView):
-    authentication_classes = (JSONWebTokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
-    serializer_class = ModelBaseSerializer
-
-    model = ModelBase
-
-    def get_queryset(self, request):
-        queryset = ModelBase.permitted.get_queryset(request.user)
-        return queryset
-
-    def list(self, request):
-        queryset = self.get_queryset(request)
-        serializer = ModelBaseSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-
-urlpatterns += [
-    url(r"^modelbase-list/$", MockListView.as_view()),
-]
+#
+# urlpatterns += [
+#     url(r"^modelbase-list/$", MockListView.as_view()),
+# ]
 
 
 class TokenAuthenticationTestCase(TestCase):
@@ -53,8 +23,6 @@ class TokenAuthenticationTestCase(TestCase):
     Test that users can be authenticated using
     JWT and view objects.
     """
-
-    urls = "mysite.tests.test_authentication"
 
     def setUp(self):
         self.factory = RequestFactory()
@@ -80,14 +48,14 @@ class TokenAuthenticationTestCase(TestCase):
             "username": "admin",
             "password": "password"
         }
-        response = self.client.post(reverse("jwt:obtain_token"), data)
+        response = self.client.post(reverse("obtain_token"), data)
         self.admin_user_jwt = response.data["token"]
 
         data = {
             "username": "john",
             "password": "password"
         }
-        response = self.client.post(reverse("jwt:obtain_token"), data)
+        response = self.client.post(reverse("obtain_token"), data)
         self.non_staff_user_jwt = response.data["token"]
 
         # create published object
@@ -111,7 +79,7 @@ class TokenAuthenticationTestCase(TestCase):
     def test_admin_has_access_to_all(self):
         authorization_header = "JWT {0}".format(self.admin_user_jwt)
         response = self.client.get(
-            "/modelbase-list/",
+            reverse("modelbase_list"),
             HTTP_AUTHORIZATION=authorization_header
         )
         items = json.loads(response.content)
