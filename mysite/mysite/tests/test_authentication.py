@@ -3,19 +3,11 @@ import json
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
-from django.conf.urls import url
 from django.test import RequestFactory, TestCase
 
 from rest_framework.test import APIClient
 
-
 from jmbo.models import ModelBase
-
-
-#
-# urlpatterns += [
-#     url(r"^modelbase-list/$", MockListView.as_view()),
-# ]
 
 
 class TokenAuthenticationTestCase(TestCase):

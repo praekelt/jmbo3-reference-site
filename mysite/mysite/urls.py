@@ -43,7 +43,6 @@ urlpatterns = [
     url(r"^comments/", include("django_comments.urls")),
     url(r"^post/", include("post.urls")),
     url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
-    # url(r"^jwt-token/", include(jwt_patterns, namespace="jwt")),
     url(r"^api-auth/$", obtain_jwt_token, name="obtain_token"),
 ]
 
