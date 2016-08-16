@@ -14,3 +14,5 @@ dist/
 ve/
 mysite/db.sqlite3
 mysite/media
+.idea/
+.coverage

@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
 
+from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework import routers, serializers, viewsets
 import rest_framework_extras
 from jmbo.admin import ModelBaseAdmin, ModelBaseAdminForm
@@ -34,13 +35,15 @@ router.register(r"manufacturers", ManufacturerViewSet)
 
 admin.autodiscover()
 
+
 urlpatterns = [
     url(r"^api/(?P<version>(v1))/", include(router.urls)),
     url(r"^admin/", include(admin.site.urls)),
     url(r"^jmbo/", include("jmbo.urls")),
     url(r"^comments/", include("django_comments.urls")),
     url(r"^post/", include("post.urls")),
-    url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework"))
+    url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    url(r"^api-auth/$", obtain_jwt_token, name="obtain_token"),
 ]
 
 if settings.DEBUG:

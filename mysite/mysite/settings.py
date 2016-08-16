@@ -119,7 +119,12 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
-    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning"
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+    ),
 }
 
 CKEDITOR_UPLOAD_PATH = expanduser("~")
